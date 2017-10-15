@@ -239,7 +239,7 @@ public class NFAConstructor {
             }
             pair.endNode = p.endNode;
         }
-        //pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
+        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
         pair.endNode = end;
     }
 
