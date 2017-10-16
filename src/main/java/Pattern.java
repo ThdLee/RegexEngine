@@ -3,7 +3,9 @@ import dfa.DFANode;
 import nfa.Lexer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Pattern {
     private static final char EOS = Character.MAX_VALUE;
@@ -29,24 +31,21 @@ public class Pattern {
 
     public boolean match(String content) {
         this.content = content;
-        index = 0;
 
         if (prefix && suffix) {
-            if (matchInNodeSuffix(start) && nextChar() == EOS)
+            if (matchInNodeWithSuffix(start, 0))
                 return true;
         } else if (prefix) {
-            if (matchInNode(start))
+            if (matchInNode(start, 0))
                 return true;
         } else if (suffix) {
             for (int i = 0; i < content.length(); i++) {
-                index = i;
-                if (matchInNodeSuffix(start) && nextChar() == EOS)
+                if (matchInNodeWithSuffix(start, 0))
                     return true;
             }
         } else {
             for (int i = 0; i < content.length(); i++) {
-                index = i;
-                if (matchInNode(start))
+                if (matchInNode(start, i))
                     return true;
             }
         }
@@ -61,9 +60,7 @@ public class Pattern {
         ArrayList<String> list = new ArrayList<>();
 
         for (int i = 0; i < content.length(); i++) {
-            index = i;
-            if (matchInNode(start)) {
-                index = index >= content.length() ? index : index-1;
+            if (matchInNodeForMatchAll(start, i)) {
                 list.add(content.substring(i, index));
                 i = index;
             }
@@ -71,38 +68,103 @@ public class Pattern {
         return list;
     }
 
-    private boolean matchInNode(DFANode node) {
-        char c = nextChar();
-        if (c == EOS) return node.isEnd();
+    private boolean matchInNode(DFANode node, int i) {
+        char c = getChar(i);
+        if (node.isEnd()) return true;
+        if (c == EOS) return false;
+        boolean res = false;
         for (DFAEdge edge : node.getEdges()) {
             DFANode next = edge.getTarget();
             if (edge.hasChar(c)) {
-                return matchInNode(next) || next.isEnd();
+                res = res || matchInNode(next, ++i);
             }
         }
-        return false;
+        return res;
     }
 
-    private boolean matchInNodeSuffix(DFANode node) {
-        char c = nextChar();
-        if (c == EOS && node.isEnd()) {
+    private boolean matchInNodeWithSuffix(DFANode node, int i) {
+        char c = getChar(i);
+        if (c == EOS && node.isEnd()) { return true; }
+        else if (c == EOS) { return false; }
+        boolean res = false;
+        for (DFAEdge edge : node.getEdges()) {
+            DFANode next = edge.getTarget();
+            if (edge.hasChar(c)) {
+                res = res || matchInNodeWithSuffix(next, ++i);
+            }
+        }
+        return res;
+    }
+
+    private boolean matchInNodeForMatchAll(DFANode node, int i) {
+        char c = getChar(i++);
+        if (node.isEnd()) {
+            index = i;
             return true;
-        } else if (c == EOS) {
-            return false;
+        }
+        if (c == EOS) return false;
+        boolean res = false;
+        for (DFAEdge edge : node.getEdges()) {
+            DFANode next = edge.getTarget();
+            if (edge.hasChar(c)) {
+                res = res || matchInNodeForMatchAll(next, i);
+            }
+        }
+        return res;
+    }
+
+    public void printTrace(String content) {
+        this.content = content;
+        index = 0;
+
+        StringBuilder str = new StringBuilder();
+
+        traceMatch(start, 0, str);
+
+        System.out.println(str.toString());
+    }
+
+    private void traceMatch(DFANode node, int index, StringBuilder str) {
+        str.append(node);
+        char c = getChar(index);
+        if (c == EOS) {
+            str.append(" EOS ");
+            return;
         }
         for (DFAEdge edge : node.getEdges()) {
             DFANode next = edge.getTarget();
             if (edge.hasChar(c)) {
-                return matchInNodeSuffix(next);
+                str.append(edge).append('\n');
+                traceMatch(next, ++index, str);
             }
         }
-        return false;
     }
 
-
-    private char nextChar() {
+    private char getChar(int index) {
         if (index >= content.length()) return EOS;
-        return content.charAt(index++);
+        return content.charAt(index);
     }
 
+    public void printDFA() {
+        StringBuilder str = new StringBuilder();
+        Set<DFANode> set = new HashSet<>();
+        printDFA(start, str, set);
+
+        System.out.println(str.toString());
+    }
+
+    private void printDFA(DFANode node, StringBuilder str, Set<DFANode> set) {
+        if (set.contains(node)) return;
+        else {
+            str.append(node);
+            for (DFAEdge edge : node.getEdges()) {
+                str.append(edge);
+            }
+            str.append('\n');
+            set.add(node);
+        }
+        for (DFAEdge edge : node.getEdges()) {
+            printDFA(edge.getTarget(), str, set);
+        }
+    }
 }

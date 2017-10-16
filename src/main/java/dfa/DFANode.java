@@ -1,6 +1,8 @@
 package dfa;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DFANode {
     public enum STATE {
@@ -11,11 +13,13 @@ public class DFANode {
     }
 
     ArrayList<DFAEdge> edges;
+    Set<Integer> targets;
     private int id;
     private STATE state;
 
     public DFANode(int id) {
         edges = new ArrayList<>();
+        targets = new HashSet<>();
         this.id = id;
         this.state = STATE.NONE;
     }
@@ -32,8 +36,11 @@ public class DFANode {
         return id;
     }
 
-    public void  addEdge(DFAEdge edge) {
+    public void addEdge(DFAEdge edge) {
+        int id = edge.getTarget().getId();
+        if (targets.contains(id)) return;
         edges.add(edge);
+        targets.add(id);
     }
 
     public Iterable<DFAEdge> getEdges() {
@@ -43,4 +50,12 @@ public class DFANode {
     public boolean isEnd() {
         return state == STATE.END || state == STATE.BOTH;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("[node:").append(id).append(' ').append(state).append(']');
+        return str.toString();
+    }
+
 }

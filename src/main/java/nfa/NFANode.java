@@ -47,12 +47,10 @@ public class NFANode {
     public String toString() {
         StringBuilder str = new StringBuilder();
 
-        str.append("node:");
-        str.append(id);
+        str.append("node:").append(id);
 
         if (state == STATE.END) {
             str.append(" END ");
-            str.toString();
         } else if (state == STATE.START) {
             str.append(" START ");
         }

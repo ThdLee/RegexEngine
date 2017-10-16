@@ -77,13 +77,12 @@ public class NFAEdge implements Cloneable {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("[target:");
-        str.append(target.getId());
-        str.append(' ');
-        str.append(label);
-        str.append(']');
-        return str.toString();
+        String str = "[target:" +
+                target.getId() +
+                ' ' +
+                label +
+                ']';
+        return str;
     }
 
 

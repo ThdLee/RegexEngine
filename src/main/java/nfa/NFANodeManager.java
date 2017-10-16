@@ -46,8 +46,7 @@ public class NFANodeManager {
     public String allNodesToString() {
         StringBuilder str = new StringBuilder();
         for (NFANode node : nodes) {
-            str.append(node.toString());
-            str.append('\n');
+            str.append(node.toString()).append('\n');
         }
         return str.toString();
     }

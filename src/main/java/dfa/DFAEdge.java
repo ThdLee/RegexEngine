@@ -27,4 +27,9 @@ public class DFAEdge {
         }
         return label.getChar() == c;
     }
+
+    @Override
+    public String toString() {
+        return "(next: " + target.getId() + " label:[" + label + "])";
+    }
 }

@@ -7,7 +7,7 @@ public class RegexTest {
 
     @Test
     public void test() {
-        String str = "\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)*[A-Za-z]{2,14}";
+        String str = "\\d+";
 //        NFAConstructor nfa = new NFAConstructor();
 //        nfa.constructNFAPair(str);
 //        System.out.println(NFANodeManager.getInstance().allNodesToString());
@@ -16,7 +16,10 @@ public class RegexTest {
 //        System.out.println(constructor.toTableString());
 
         Pattern pattern = RegexEngine.getInstance().createPattern(str);
-        System.out.println(pattern.match("leee@outlook.com"));
+        for (String s : pattern.matchAll("88a99a10")) {
+            System.out.println(s);
+        }
+
     }
 
 }

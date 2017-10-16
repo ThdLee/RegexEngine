@@ -30,12 +30,9 @@ public class DFAEntry {
     public String toString() {
         StringBuilder str = new StringBuilder();
         for (EdgeLabel l : map.keySet()) {
-            str.append('(');
-            str.append(l);
-            str.append(',');
+            str.append('(').append(l).append(',');
             for (NFANode node : map.get(l)) {
-                str.append(node.getId());
-                str.append(' ');
+                str.append(node.getId()).append(' ');
             }
             str.append(')');
         }

@@ -101,23 +101,6 @@ public class DFAConstructor {
         }
     }
 
-    private void nonEpsilonTargetImpl(NFANode node, Set<NFANode> set, boolean added) {
-
-        for (NFAEdge edge : node.getEdges()) {
-            NFANode n = edge.getTarget();
-            if (added && edge.isEpsilon()) {
-                set.add(n);
-                nonEpsilonTargetImpl(n, set, added);
-            } else if (!added && edge.isEpsilon()) {
-                nonEpsilonTargetImpl(n, set, added);
-            } else if (added) {
-                return;
-            } else {
-                set.add(n);
-                nonEpsilonTargetImpl(n, set, true);
-            }
-        }
-    }
 
     private Set<NFANode> delta(Set<NFANode> set, EdgeLabel c) {
         Set<NFANode> resSet = new HashSet<>();
@@ -147,12 +130,9 @@ public class DFAConstructor {
         for (Set<NFANode> set : T.keySet()) {
             str.append('[');
             for (NFANode node : set) {
-                str.append(node.getId());
-                str.append(' ');
+                str.append(node.getId()).append(' ');
             }
-            str.append("] ");
-            str.append(T.get(set));
-            str.append('\n');
+            str.append("] ").append(T.get(set)).append('\n');
         }
         return str.toString();
     }
