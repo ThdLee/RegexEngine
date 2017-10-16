@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class NFANodeManager {
-    private static final NFANodeManager instance = new NFANodeManager();
 
-    private NFANodeManager() {}
-
-    public static NFANodeManager getInstance() {
-        return instance;
-    }
 
     private int count = 0;
 

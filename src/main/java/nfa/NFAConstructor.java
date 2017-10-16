@@ -7,17 +7,20 @@ import java.util.Stack;
 
 public class NFAConstructor {
     private Lexer lexer;
+    private NFANodeManager manager;
 
     public NFAConstructor() {
         this.lexer = new Lexer();
+        this.manager = new NFANodeManager();
     }
 
     public NFAConstructor(Lexer lexer) {
         this.lexer = lexer;
+        this.manager = new NFANodeManager();
     }
 
     public NFAPair constructNFAPair(String regex) {
-        NFANodeManager.getInstance().clear();
+        manager.clear();
         ArrayList<Token> suffixList = lexer.buildSuffixTokenList(regex);
         Stack<NFAPair> pairStack = new Stack<>();
         
@@ -85,8 +88,8 @@ public class NFAConstructor {
             pair = pair1;
         } else {
             pair = new NFAPair();
-            pair.startNode = NFANodeManager.getInstance().createNode();
-            pair.endNode = NFANodeManager.getInstance().createNode();
+            pair.startNode = manager.createNode();
+            pair.endNode = manager.createNode();
 
             pair.set.add(pair.startNode);
             pair.set.add(pair.endNode);
@@ -113,8 +116,8 @@ public class NFAConstructor {
     
     private NFAPair constructForChar(CharToken token) {
         NFAPair pair = new NFAPair();
-        pair.startNode = NFANodeManager.getInstance().createNode();
-        pair.endNode = NFANodeManager.getInstance().createNode();
+        pair.startNode = manager.createNode();
+        pair.endNode = manager.createNode();
 
         pair.set.add(pair.startNode);
         pair.set.add(pair.endNode);
@@ -127,8 +130,8 @@ public class NFAConstructor {
 
     private NFAPair constructForSet(SetToken token) {
         NFAPair pair = new NFAPair();
-        pair.startNode = NFANodeManager.getInstance().createNode();
-        pair.endNode = NFANodeManager.getInstance().createNode();
+        pair.startNode = manager.createNode();
+        pair.endNode = manager.createNode();
 
         pair.set.add(pair.startNode);
         pair.set.add(pair.endNode);
@@ -165,8 +168,8 @@ public class NFAConstructor {
     private void constructForStarClosure(NFAPair pair) {
         NFANode start, end;
 
-        start = NFANodeManager.getInstance().createNode();
-        end = NFANodeManager.getInstance().createNode();
+        start = manager.createNode();
+        end = manager.createNode();
 
         start.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
         pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
@@ -181,8 +184,8 @@ public class NFAConstructor {
     private void constructForPlusClosure(NFAPair pair) {
         NFANode start, end;
 
-        start = NFANodeManager.getInstance().createNode();
-        end = NFANodeManager.getInstance().createNode();
+        start = manager.createNode();
+        end = manager.createNode();
 
         start.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
         pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
@@ -195,8 +198,8 @@ public class NFAConstructor {
     private void constructForOptionClosure(NFAPair pair) {
         NFANode start, end;
 
-        start = NFANodeManager.getInstance().createNode();
-        end = NFANodeManager.getInstance().createNode();
+        start = manager.createNode();
+        end = manager.createNode();
 
         start.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
         pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
@@ -210,7 +213,7 @@ public class NFAConstructor {
     private void constructForManyClosure(RangeToken token, NFAPair pair) {
         NFAPair p = pair;
         for (int i = 1; i < token.getLow(); i++) {
-            p = p.clone();
+            p = p.clone(manager);
             pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(p.startNode));
             pair.endNode = p.endNode;
         }
@@ -220,7 +223,7 @@ public class NFAConstructor {
     private void constructForMoreClosure(RangeToken token, NFAPair pair) {
         NFAPair p = pair;
         for (int i = 1; i < token.getLow(); i++) {
-            p = p.clone();
+            p = p.clone(manager);
             pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(p.startNode));
             pair.endNode = p.endNode;
         }
@@ -228,11 +231,11 @@ public class NFAConstructor {
     }
 
     private void constructForRangeClosure(RangeToken token, NFAPair pair) {
-        NFANode end = NFANodeManager.getInstance().createNode();
+        NFANode end = manager.createNode();
 
         NFAPair p = pair;
         for (int i = 1; i < token.getHigh(); i++) {
-            p = p.clone();
+            p = p.clone(manager);
             pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(p.startNode));
             if (i >= token.getLow()) {
                 pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));

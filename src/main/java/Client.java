@@ -15,7 +15,8 @@ public class Client {
             System.exit(1);
         }
 
-        Pattern pattern = RegexEngine.getInstance().createPattern(regex);
+        RegexEngine regexEngine = new RegexEngine();
+        Pattern pattern = regexEngine.createPattern(regex);
         if (all) {
             for (String str : pattern.matchAll(content)) {
                 System.out.println(str);

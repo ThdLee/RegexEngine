@@ -4,22 +4,21 @@ import nfa.NFAConstructor;
 
 public class RegexEngine {
 
-    private static final RegexEngine instance = new RegexEngine();
-
-    public static RegexEngine getInstance() {
-        return instance;
-    }
 
     private Lexer lexer;
     private NFAConstructor nfa;
     private DFAConstructor dfa;
 
-    private RegexEngine() {
+    public RegexEngine() {
         lexer = new Lexer();
         nfa = new NFAConstructor(lexer);
         dfa = new DFAConstructor(nfa);
     }
 
+    /**
+     * @param regex The expression to be compiled
+     * @return a Pattern for regular expression
+     */
     public Pattern createPattern(String regex) {
         Pattern pattern = new Pattern(dfa.constructDFA(regex));
 

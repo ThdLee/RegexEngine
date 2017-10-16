@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="RegexEngine">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/target/RegexEngine.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

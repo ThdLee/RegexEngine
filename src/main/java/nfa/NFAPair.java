@@ -32,8 +32,7 @@ public class NFAPair implements Cloneable {
         set = null;
     }
 
-    @Override
-    public NFAPair clone() {
+    public NFAPair clone(NFANodeManager manager) {
         NFAPair pair = null;
         try {
             pair = (NFAPair) super.clone();
@@ -45,7 +44,7 @@ public class NFAPair implements Cloneable {
 
         HashMap<NFANode, NFANode> map = new HashMap<>();
         for (NFANode node : set) {
-            NFANode n = NFANodeManager.getInstance().copyNode(node);
+            NFANode n = manager.copyNode(node);
             map.put(node, n);
             pair.set.add(n);
         }
