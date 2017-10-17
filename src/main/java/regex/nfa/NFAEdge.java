@@ -1,4 +1,4 @@
-package nfa;
+package regex.nfa;
 
 import java.util.Set;
 
@@ -6,18 +6,22 @@ public class NFAEdge implements Cloneable {
     private NFANode target;
     private EdgeLabel label;
 
-    public NFAEdge(NFANode target) {
+    NFAEdge(NFANode target) {
         this.label = new EdgeLabel();
         this.target = target;
     }
 
-    public NFAEdge(NFANode target, char c) {
+    NFAEdge(NFANode target, char c) {
         this.label = new EdgeLabel(c);
         this.target = target;
     }
 
-    public NFAEdge(NFANode target, Set<Character> set) {
+    NFAEdge(NFANode target, Set<Character> set) {
         this.label = new EdgeLabel(set);
+        this.target = target;
+    }
+
+    void setTarget(NFANode target) {
         this.target = target;
     }
 
@@ -25,16 +29,8 @@ public class NFAEdge implements Cloneable {
         return target;
     }
 
-    public void setTarget(NFANode target) {
-        this.target = target;
-    }
-
     public EdgeLabel getLabel() {
         return label;
-    }
-
-    public void setLabel(EdgeLabel label) {
-        this.label = label;
     }
 
     public boolean isEpsilon() {
@@ -62,14 +58,9 @@ public class NFAEdge implements Cloneable {
 
     public boolean hasLabel(EdgeLabel l) {
         if (label.getChar() == l.getChar()) {
-            if (label.getChar() != EdgeLabel.SET)  {
-                return true;
-            } else {
-                if (label.getSet() == l.getSet()) return true;
-                return label.getSet().equals(l.getSet());
-            }
+            return label.getChar() != EdgeLabel.SET || label.getSet() == l.getSet() || label.getSet().equals(l.getSet());
         } else if (isSet() && l.getChar() >= 0) {
-            return label.getSet().contains(l.getChar());
+            return label.getSet().contains((char)l.getChar());
         }
         return false;
     }
@@ -77,12 +68,11 @@ public class NFAEdge implements Cloneable {
 
     @Override
     public String toString() {
-        String str = "[target:" +
+        return "[target:" +
                 target.getId() +
                 ' ' +
                 label +
                 ']';
-        return str;
     }
 
 

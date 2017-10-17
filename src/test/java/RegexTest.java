@@ -1,22 +1,20 @@
-import dfa.DFAConstructor;
-import nfa.NFAConstructor;
-import nfa.NFANodeManager;
 import org.junit.Test;
+import regex.Pattern;
+import regex.RegexEngine;
 
 public class RegexTest {
 
     @Test
     public void test() {
-        String str = "\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14}";
-//        NFAConstructor nfa = new NFAConstructor();
-//        nfa.constructNFAPair(str);
+        String str = "\\d+";
+//        NFAConstructor regex.nfa = new NFAConstructor();
+//        regex.nfa.constructNFAPair(str);
 //        System.out.println(NFANodeManager.getInstance().allNodesToString());
 //        DFAConstructor constructor = new DFAConstructor();
 //        constructor.constructDFA(str);
 //        System.out.println(constructor.toTableString());
 
-        RegexEngine regexEngine = new RegexEngine();
-        Pattern pattern = regexEngine.createPattern(str);
+        Pattern pattern = RegexEngine.createPattern(str);
         for (String s : pattern.matchAll("88a99a10")) {
             System.out.println(s);
         }

@@ -1,4 +1,4 @@
-package nfa;
+package regex.nfa;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,38 +9,44 @@ public class NFANode {
         START,
         END
     }
-    Set<NFAEdge> edgeSet;
+    private Set<NFAEdge> edgeSet;
 
     private STATE state;
 
     private int id;
 
-    NFANode(int id) {
+    NFANode() {
         edgeSet = new HashSet<>();
         state = STATE.NONE;
-        this.id = id;
     }
 
     public int getId() {
         return id;
     }
 
+    void setId(int id) {
+        this.id = id;
+    }
+
+    public Iterable<NFAEdge> getEdges() {
+        return edgeSet;
+    }
+
     void addEdge(NFAEdge edge) {
         edgeSet.add(edge);
     }
 
-
-    public STATE getState() {
+    STATE getState() {
         return state;
     }
 
-    public void setState(STATE state) {
+    void setState(STATE state) {
         this.state = state;
     }
 
-
-    public Iterable<NFAEdge> getEdges() {
-        return edgeSet;
+    void clear() {
+        edgeSet.clear();
+        state = STATE.NONE;
     }
 
     @Override

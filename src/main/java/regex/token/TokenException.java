@@ -1,4 +1,4 @@
-package token;
+package regex.token;
 
 public class TokenException extends RuntimeException {
     public TokenException() {

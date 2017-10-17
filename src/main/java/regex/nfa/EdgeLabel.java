@@ -1,4 +1,4 @@
-package nfa;
+package regex.nfa;
 
 import java.util.Set;
 
@@ -9,15 +9,15 @@ public class EdgeLabel {
     private int ch;
     private Set<Character> set = null;
 
-    public EdgeLabel() {
+    EdgeLabel() {
         this.ch = EPSILON;
     }
 
-    public EdgeLabel(char ch) {
+    EdgeLabel(char ch) {
         this.ch = ch;
     }
 
-    public EdgeLabel(Set<Character> set) {
+    EdgeLabel(Set<Character> set) {
         this.set = set;
         this.ch = SET;
     }
@@ -34,14 +34,16 @@ public class EdgeLabel {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        if (ch == EdgeLabel.EPSILON) {
-            str.append("epsilon");
-        } else if (ch == EdgeLabel.SET) {
-            for (char c : set) {
-                str.append(c);
-            }
-        } else {
-            str.append((char) ch);
+        switch (ch) {
+            case EPSILON:
+                str.append("epsilon");
+                break;
+            case SET:
+                for (char c : set) str.append(c);
+                break;
+            default:
+                str.append((char) ch);
+                break;
         }
         return str.toString();
     }

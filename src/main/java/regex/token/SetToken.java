@@ -1,8 +1,6 @@
-package token;
+package regex.token;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class SetToken extends Token {
@@ -84,7 +82,7 @@ public class SetToken extends Token {
 
     @Override
     public String toString() {
-        StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
         str.append("Set [");
         for (char c : set) {
             str.append(c);

@@ -1,4 +1,4 @@
-package token;
+package regex.token;
 
 
 public class RangeToken extends Token {

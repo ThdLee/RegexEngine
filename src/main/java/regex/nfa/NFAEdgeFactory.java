@@ -1,4 +1,4 @@
-package nfa;
+package regex.nfa;
 
 import java.util.Set;
 

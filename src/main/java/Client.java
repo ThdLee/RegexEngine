@@ -1,3 +1,6 @@
+import regex.Pattern;
+import regex.RegexEngine;
+
 public class Client {
     public static void main(String[] args) {
         String regex = null;
@@ -15,8 +18,7 @@ public class Client {
             System.exit(1);
         }
 
-        RegexEngine regexEngine = new RegexEngine();
-        Pattern pattern = regexEngine.createPattern(regex);
+        Pattern pattern = RegexEngine.createPattern(regex);
         if (all) {
             for (String str : pattern.matchAll(content)) {
                 System.out.println(str);

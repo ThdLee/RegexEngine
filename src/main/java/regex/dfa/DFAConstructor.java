@@ -1,6 +1,6 @@
-package dfa;
+package regex.dfa;
 
-import nfa.*;
+import regex.nfa.*;
 
 import java.util.*;
 
@@ -60,20 +60,26 @@ public class DFAConstructor {
     private void covertNFAToDFA(NFAPair pair) {
         Set<Set<NFANode>> Q = new HashSet<>();
         Set<NFANode> initSet = new HashSet<>();
+
         initSet.add(pair.startNode);
         handleEpsilonClosure(initSet);
         Q.add(initSet);
 
         Stack<Set<NFANode>> workList = new Stack<>();
         workList.push(initSet);
+
         while (!workList.isEmpty()) {
             Set<NFANode> q = workList.pop();
+
             T.put(q, DFAEntry.createEntry());
+
             for (EdgeLabel c : pair.getLabelSet()) {
                 Set<NFANode> t = delta(q, c);
                 handleEpsilonClosure(t);
+
                 DFAEntry entry = T.get(q);
                 entry.map.put(c, t);
+
                 if (!t.isEmpty() && !Q.contains(t)) {
                     Q.add(t);
                     workList.push(t);
@@ -125,7 +131,7 @@ public class DFAConstructor {
 
     }
 
-    public String toTableString() {
+    public void printTableEntry() {
         StringBuilder str = new StringBuilder();
         for (Set<NFANode> set : T.keySet()) {
             str.append('[');
@@ -134,7 +140,7 @@ public class DFAConstructor {
             }
             str.append("] ").append(T.get(set)).append('\n');
         }
-        return str.toString();
+        System.out.println(str.toString());
     }
 
 }

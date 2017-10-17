@@ -1,6 +1,7 @@
-import dfa.DFAEdge;
-import dfa.DFANode;
-import nfa.Lexer;
+package regex;
+
+import regex.dfa.DFAEdge;
+import regex.dfa.DFANode;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,17 +16,17 @@ public class Pattern {
 
     private String content;
     private int index;
-    DFANode start;
+    private DFANode start;
 
-    public Pattern(DFANode start) {
+    Pattern(DFANode start) {
         this.start = start;
     }
 
-    public void setPrefix(boolean prefix) {
+    void setPrefix(boolean prefix) {
         this.prefix = prefix;
     }
 
-    public void setSuffix(boolean suffix) {
+    void setSuffix(boolean suffix) {
         this.suffix = suffix;
     }
 
@@ -68,28 +69,15 @@ public class Pattern {
         index = 0;
         ArrayList<String> list = new ArrayList<>();
 
-        for (int i = 0; i < content.length(); i++) {
-            if (matchInNodeForMatchAll(start, i)) {
+        for (int i = 0; i < content.length();) {
+            if (matchInNodeForMatchAll(start, i, false)) {
                 list.add(content.substring(i, index));
                 i = index;
+                continue;
             }
+            i++;
         }
         return list;
-    }
-
-    /**
-     * print all visited when matching
-     * @param content The character sequence to be matched
-     */
-    public void printTrace(String content) {
-        this.content = content;
-        index = 0;
-
-        StringBuilder str = new StringBuilder();
-
-        printTrace(start, 0, str);
-
-        System.out.println(str.toString());
     }
 
     /**
@@ -111,7 +99,7 @@ public class Pattern {
         for (DFAEdge edge : node.getEdges()) {
             DFANode next = edge.getTarget();
             if (edge.hasChar(c)) {
-                res = res || matchInNode(next, ++i);
+                res = res || matchInNode(next, i+1);
             }
         }
         return res;
@@ -131,10 +119,12 @@ public class Pattern {
         return res;
     }
 
-    private boolean matchInNodeForMatchAll(DFANode node, int i) {
-        char c = getChar(i++);
+    private boolean matchInNodeForMatchAll(DFANode node, int i, boolean end) {
+        char c = getChar(i);
         if (node.isEnd()) {
-            index = i;
+            index = i > index ? i : index;
+            if (!end) end = true;
+        } else if (!node.isEnd() && end){
             return true;
         }
         if (c == EOS) return false;
@@ -142,26 +132,10 @@ public class Pattern {
         for (DFAEdge edge : node.getEdges()) {
             DFANode next = edge.getTarget();
             if (edge.hasChar(c)) {
-                res = res || matchInNodeForMatchAll(next, i);
+                res = res || matchInNodeForMatchAll(next, i+1, end);
             }
         }
-        return res;
-    }
-
-    private void printTrace(DFANode node, int index, StringBuilder str) {
-        str.append(node);
-        char c = getChar(index);
-        if (c == EOS) {
-            str.append(" EOS ");
-            return;
-        }
-        for (DFAEdge edge : node.getEdges()) {
-            DFANode next = edge.getTarget();
-            if (edge.hasChar(c)) {
-                str.append(edge).append('\n');
-                printTrace(next, ++index, str);
-            }
-        }
+        return res || end;
     }
 
     private void printDFA(DFANode node, StringBuilder str, Set<DFANode> set) {

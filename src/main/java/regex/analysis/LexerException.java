@@ -1,4 +1,4 @@
-package nfa;
+package regex.analysis;
 
 public class LexerException extends RuntimeException {
     public LexerException() {

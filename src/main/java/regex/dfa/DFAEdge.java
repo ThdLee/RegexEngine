@@ -1,6 +1,6 @@
-package dfa;
+package regex.dfa;
 
-import nfa.EdgeLabel;
+import regex.nfa.EdgeLabel;
 
 public class DFAEdge {
     private DFANode target;

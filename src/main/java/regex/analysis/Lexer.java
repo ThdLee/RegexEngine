@@ -1,6 +1,6 @@
-package nfa;
+package regex.analysis;
 
-import token.*;
+import regex.token.*;
 
 import java.util.*;
 
@@ -129,11 +129,10 @@ public class Lexer {
             Token next = tokenList.get(i+1);
             list.add(cur);
 
-            if ((cur instanceof CharToken || cur instanceof SetToken) &&
-                    (next instanceof CharToken || next == SignToken.PAREN_START || next instanceof SetToken)) {
-                list.add(SignToken.CONNECT);
-            } else if ((cur instanceof RangeToken || cur == SignToken.PAREN_END) &&
-                    (next == SignToken.PAREN_START || next instanceof CharToken || next instanceof SetToken)) {
+            if (((cur instanceof CharToken || cur instanceof SetToken)
+                    && (next instanceof CharToken || next == SignToken.PAREN_START || next instanceof SetToken))
+                    || ((cur instanceof RangeToken || cur == SignToken.PAREN_END)
+                    && (next == SignToken.PAREN_START || next instanceof CharToken || next instanceof SetToken))) {
                 list.add(SignToken.CONNECT);
             }
         }
@@ -149,8 +148,7 @@ public class Lexer {
         Stack<SignToken> signStack = new Stack<SignToken>();
         ArrayList<Token> suffixList = new ArrayList<Token>();
 
-        for (int i = 0; i < infixList.size(); i++) {
-            Token token = infixList.get(i);
+        for (Token token : infixList) {
             if (token instanceof CharToken ||
                     token instanceof RangeToken ||
                     token instanceof SetToken) {
@@ -178,7 +176,7 @@ public class Lexer {
                 } else if (token.equals(SignToken.CONNECT)) {
                     if (!signStack.empty() &&
                             (signStack.peek().equals(SignToken.OR) ||
-                            signStack.peek().equals(SignToken.CONNECT))) {
+                                    signStack.peek().equals(SignToken.CONNECT))) {
                         suffixList.add(token);
                     } else {
                         signStack.push(SignToken.CONNECT);

@@ -1,4 +1,4 @@
-package nfa;
+package regex.nfa;
 
 public class NFAException extends RuntimeException {
     public NFAException() {

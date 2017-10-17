@@ -1,7 +1,7 @@
-package dfa;
+package regex.dfa;
 
-import nfa.EdgeLabel;
-import nfa.NFANode;
+import regex.nfa.EdgeLabel;
+import regex.nfa.NFANode;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class DFAEntry {
 
-    public static int count = 0;
-    public static DFAEntry createEntry() {
+    private static int count = 0;
+    static DFAEntry createEntry() {
         return new DFAEntry(count++);
     }
     private int id;
