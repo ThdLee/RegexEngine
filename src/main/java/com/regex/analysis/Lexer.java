@@ -1,6 +1,6 @@
-package regex.analysis;
+package com.regex.analysis;
 
-import regex.token.*;
+import com.regex.token.*;
 
 import java.util.*;
 
@@ -61,7 +61,7 @@ public class Lexer {
 
 
     public ArrayList<Token> buildInfixTokenList(String re) {
-        if (re == null) throw new LexerException("Error: regex is null");
+        if (re == null) throw new LexerException("Error: com.regex is null");
         regex = re;
         index = 0;
         prefix = false;
@@ -129,6 +129,7 @@ public class Lexer {
             Token next = tokenList.get(i+1);
             list.add(cur);
 
+            // add connect token
             if (((cur instanceof CharToken || cur instanceof SetToken)
                     && (next instanceof CharToken || next == SignToken.PAREN_START || next instanceof SetToken))
                     || ((cur instanceof RangeToken || cur == SignToken.PAREN_END)

@@ -1,4 +1,4 @@
-package regex.token;
+package com.regex.token;
 
 import java.util.HashSet;
 import java.util.Set;

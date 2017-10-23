@@ -1,10 +1,9 @@
-package regex.dfa;
+package com.regex.dfa;
 
-import regex.nfa.EdgeLabel;
-import regex.nfa.NFANode;
+import com.regex.nfa.EdgeLabel;
+import com.regex.nfa.NFANode;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 

@@ -1,22 +1,35 @@
-package regex.nfa;
+package com.regex.nfa;
 
 import java.util.Set;
 
 public class NFAEdge implements Cloneable {
+
+    static NFAEdge createEpsilonEdge(NFANode node) {
+        return new NFAEdge(node);
+    }
+
+    static NFAEdge createCharEdge(NFANode node, char c) {
+        return new NFAEdge(node, c);
+    }
+
+    static NFAEdge createSetEdge(NFANode node, Set<Character> set) {
+        return new NFAEdge(node, set);
+    }
+
     private NFANode target;
     private EdgeLabel label;
 
-    NFAEdge(NFANode target) {
+    private NFAEdge(NFANode target) {
         this.label = new EdgeLabel();
         this.target = target;
     }
 
-    NFAEdge(NFANode target, char c) {
+    private NFAEdge(NFANode target, char c) {
         this.label = new EdgeLabel(c);
         this.target = target;
     }
 
-    NFAEdge(NFANode target, Set<Character> set) {
+    private NFAEdge(NFANode target, Set<Character> set) {
         this.label = new EdgeLabel(set);
         this.target = target;
     }

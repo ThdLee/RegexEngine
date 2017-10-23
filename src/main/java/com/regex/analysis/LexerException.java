@@ -1,4 +1,4 @@
-package regex.analysis;
+package com.regex.analysis;
 
 public class LexerException extends RuntimeException {
     public LexerException() {

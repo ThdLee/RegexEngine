@@ -19,7 +19,7 @@
     <properties>
         <jdk.version>1.8</jdk.version>
     </properties>
-    <name>regex.RegexEngine</name>
+    <name>com.regex.RegexEngine</name>
 
     <build>
         <plugins>
@@ -39,7 +39,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>regex.Client</mainClass>
+                            <mainClass>com.regex.Client</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

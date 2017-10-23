@@ -1,7 +1,5 @@
-package regex.nfa;
+package com.regex.nfa;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Stack;
 
 class NFANodeManager {

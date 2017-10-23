@@ -1,5 +1,9 @@
-import regex.Pattern;
-import regex.RegexEngine;
+import com.regex.Pattern;
+import com.regex.RegexEngine;
+import com.regex.token.CharToken;
+import com.regex.token.Token;
+
+import java.util.ArrayList;
 
 public class Client {
     public static void main(String[] args) {
@@ -14,7 +18,7 @@ public class Client {
             content = args[2];
             all = true;
         } else {
-            System.out.println("Usage: [-all] regex content");
+            System.out.println("Usage: [-all] com.regex content");
             System.exit(1);
         }
 

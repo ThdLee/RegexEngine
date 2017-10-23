@@ -1,7 +1,7 @@
-package regex;
+package com.regex;
 
-import regex.dfa.DFAEdge;
-import regex.dfa.DFANode;
+import com.regex.dfa.DFAEdge;
+import com.regex.dfa.DFANode;
 
 import java.util.ArrayList;
 import java.util.HashSet;

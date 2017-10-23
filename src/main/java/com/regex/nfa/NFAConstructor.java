@@ -1,7 +1,7 @@
-package regex.nfa;
+package com.regex.nfa;
 
-import regex.analysis.Lexer;
-import regex.token.*;
+import com.regex.analysis.Lexer;
+import com.regex.token.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,14 +36,14 @@ public class NFAConstructor {
                 pairStack.push(constructForSet((SetToken) token));
             } else if (token instanceof SignToken) {
                 if (token.equals(SignToken.CONNECT)) {
-                    if (pairStack.size() < 2) throw new NFAException("Error: lack of regex.token to connect");
+                    if (pairStack.size() < 2) throw new NFAException("Error: lack of com.regex.token to connect");
 
                     NFAPair pair2 = pairStack.pop();
                     NFAPair pair1 = pairStack.pop();
 
                     pairStack.push(handleConnect(pair1, pair2));
                 } else if (token.equals(SignToken.OR)) {
-                    if (pairStack.size() < 2) throw new NFAException("Error: lack of regex.token to or");
+                    if (pairStack.size() < 2) throw new NFAException("Error: lack of com.regex.token to or");
 
                     NFAPair pair2 = pairStack.pop();
                     NFAPair pair1 = pairStack.pop();
@@ -53,7 +53,7 @@ public class NFAConstructor {
                     throw new NFAException("Error: wrong " +  token);
                 }
             }  else if (token instanceof RangeToken) {
-                if (pairStack.empty()) throw new NFAException("Error: lack of regex.token to build closure");
+                if (pairStack.empty()) throw new NFAException("Error: lack of com.regex.token to build closure");
 
                 NFAPair pair = pairStack.pop();
                 constructForRange((RangeToken) token, pair);
@@ -66,13 +66,13 @@ public class NFAConstructor {
         pair.startNode.setState(NFANode.STATE.START);
         pair.endNode.setState(NFANode.STATE.END);
 
-        distributeId(pair);
+        //distributeId(pair);
 
         return pair;
     }
 
     private NFAPair handleConnect(NFAPair pair1, NFAPair pair2) {
-        pair1.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair2.startNode));
+        pair1.endNode.addEdge(NFAEdge.createEpsilonEdge(pair2.startNode));
         pair1.endNode = pair2.endNode;
 
         pair1.merge(pair2);
@@ -83,8 +83,8 @@ public class NFAConstructor {
     private NFAPair handleOr(NFAPair pair1, NFAPair pair2) {
         NFAPair pair;
         if (pair1.or) {
-            pair1.startNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair2.startNode));
-            pair2.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair1.endNode));
+            pair1.startNode.addEdge(NFAEdge.createEpsilonEdge(pair2.startNode));
+            pair2.endNode.addEdge(NFAEdge.createEpsilonEdge(pair1.endNode));
 
             pair1.merge(pair2);
 
@@ -99,11 +99,11 @@ public class NFAConstructor {
 
             pair.or = true;
 
-            pair.startNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair1.startNode));
-            pair.startNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair2.startNode));
+            pair.startNode.addEdge(NFAEdge.createEpsilonEdge(pair1.startNode));
+            pair.startNode.addEdge(NFAEdge.createEpsilonEdge(pair2.startNode));
 
-            pair1.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.endNode));
-            pair2.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.endNode));
+            pair1.endNode.addEdge(NFAEdge.createEpsilonEdge(pair.endNode));
+            pair2.endNode.addEdge(NFAEdge.createEpsilonEdge(pair.endNode));
 
             pair.merge(pair1);
             pair.merge(pair2);
@@ -119,7 +119,7 @@ public class NFAConstructor {
         pair.addNode(pair.startNode);
         pair.addNode(pair.endNode);
 
-        NFAEdge edge = NFAEdgeFactory.createCharEdge(pair.endNode, token.getChar());
+        NFAEdge edge = NFAEdge.createCharEdge(pair.endNode, token.getChar());
         pair.startNode.addEdge(edge);
         pair.addLabel(edge.getLabel());
         return pair;
@@ -133,12 +133,13 @@ public class NFAConstructor {
         pair.addNode(pair.startNode);
         pair.addNode(pair.endNode);
 
-        NFAEdge edge = NFAEdgeFactory.createSetEdge(pair.endNode, token.getSet());
+        NFAEdge edge = NFAEdge.createSetEdge(pair.endNode, token.getSet());
         pair.startNode.addEdge(edge);
         pair.addLabel(edge.getLabel());
         return pair;
     }
 
+    // handle different kinds of closures with Thompson Construction Method
     private void constructForRange(RangeToken token, NFAPair pair) {
         switch (token.getState()) {
             case PLUS:
@@ -168,11 +169,11 @@ public class NFAConstructor {
         start = manager.createNode();
         end = manager.createNode();
 
-        start.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
-        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
+        start.addEdge(NFAEdge.createEpsilonEdge(pair.startNode));
+        pair.endNode.addEdge(NFAEdge.createEpsilonEdge(end));
 
-        start.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
-        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
+        start.addEdge(NFAEdge.createEpsilonEdge(end));
+        pair.endNode.addEdge(NFAEdge.createEpsilonEdge(pair.startNode));
 
         pair.startNode = start;
         pair.endNode = end;
@@ -184,9 +185,9 @@ public class NFAConstructor {
         start = manager.createNode();
         end = manager.createNode();
 
-        start.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
-        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
-        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
+        start.addEdge(NFAEdge.createEpsilonEdge(pair.startNode));
+        pair.endNode.addEdge(NFAEdge.createEpsilonEdge(end));
+        pair.endNode.addEdge(NFAEdge.createEpsilonEdge(pair.startNode));
 
         pair.startNode = start;
         pair.endNode = end;
@@ -198,10 +199,10 @@ public class NFAConstructor {
         start = manager.createNode();
         end = manager.createNode();
 
-        start.addEdge(NFAEdgeFactory.createEpsilonEdge(pair.startNode));
-        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
+        start.addEdge(NFAEdge.createEpsilonEdge(pair.startNode));
+        pair.endNode.addEdge(NFAEdge.createEpsilonEdge(end));
 
-        start.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
+        start.addEdge(NFAEdge.createEpsilonEdge(end));
 
         pair.startNode = start;
         pair.endNode = end;
@@ -213,7 +214,7 @@ public class NFAConstructor {
         for (int i = 1; i < token.getLow(); i++) {
             np = cloneLocalNFAPair(op);
             if (i != 1) op.deprecated();
-            pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(np.startNode));
+            pair.endNode.addEdge(NFAEdge.createEpsilonEdge(np.startNode));
             pair.endNode = np.endNode;
             op = np;
         }
@@ -227,11 +228,11 @@ public class NFAConstructor {
         for (int i = 1; i < token.getLow(); i++) {
             np = cloneLocalNFAPair(op);
             if (i != 1) op.deprecated();
-            pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(np.startNode));
+            pair.endNode.addEdge(NFAEdge.createEpsilonEdge(np.startNode));
             pair.endNode = np.endNode;
             op = np;
         }
-        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(np.startNode));
+        pair.endNode.addEdge(NFAEdge.createEpsilonEdge(np.startNode));
         if (np != pair) np.deprecated();
     }
 
@@ -243,15 +244,15 @@ public class NFAConstructor {
         for (int i = 1; i < token.getHigh(); i++) {
             np = cloneLocalNFAPair(op);
             if (i != 1) op.deprecated();
-            pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(np.startNode));
+            pair.endNode.addEdge(NFAEdge.createEpsilonEdge(np.startNode));
             if (i >= token.getLow()) {
-                pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
+                pair.endNode.addEdge(NFAEdge.createEpsilonEdge(end));
             }
             pair.endNode = np.endNode;
             op = np;
         }
         if (np != pair) np.deprecated();
-        pair.endNode.addEdge(NFAEdgeFactory.createEpsilonEdge(end));
+        pair.endNode.addEdge(NFAEdge.createEpsilonEdge(end));
         pair.endNode = end;
     }
 
@@ -289,6 +290,7 @@ public class NFAConstructor {
         return newNode;
     }
 
+    // set id for every NFA node for debugging easily
     private void distributeId(NFAPair pair) {
         int id = 0;
         pair.startNode.setId(id);

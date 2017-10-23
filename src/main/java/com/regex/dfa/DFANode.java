@@ -1,4 +1,4 @@
-package regex.dfa;
+package com.regex.dfa;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,11 +17,16 @@ public class DFANode {
     private int id;
     private STATE state;
 
-    DFANode(int id) {
+    DFANode() {
         edges = new ArrayList<>();
         targets = new HashSet<>();
-        this.id = id;
         this.state = STATE.NONE;
+        id = -1;
+    }
+
+    DFANode(int id) {
+        this();
+        this.id = id;
     }
 
     public STATE getState() {
@@ -36,11 +41,22 @@ public class DFANode {
         return id;
     }
 
+    void setId(int id) {
+        this.id = id;
+    }
+
     void addEdge(DFAEdge edge) {
         int id = edge.getTarget().getId();
         if (targets.contains(id)) return;
         edges.add(edge);
         targets.add(id);
+    }
+
+    void clear() {
+        edges.clear();
+        targets.clear();
+        state = STATE.NONE;
+        id = -1;
     }
 
     public Iterable<DFAEdge> getEdges() {

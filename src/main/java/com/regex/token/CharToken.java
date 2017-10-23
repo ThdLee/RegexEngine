@@ -1,4 +1,4 @@
-package regex.token;
+package com.regex.token;
 
 public class CharToken extends Token {
 

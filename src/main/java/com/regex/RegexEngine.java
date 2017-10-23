@@ -1,8 +1,8 @@
-package regex;
+package com.regex;
 
-import regex.dfa.DFAConstructor;
-import regex.analysis.Lexer;
-import regex.nfa.NFAConstructor;
+import com.regex.dfa.DFAConstructor;
+import com.regex.analysis.Lexer;
+import com.regex.nfa.NFAConstructor;
 
 public class RegexEngine {
 
@@ -18,7 +18,7 @@ public class RegexEngine {
 
     /**
      * @param regex The expression to be compiled
-     * @return a regex.Pattern for regular expression
+     * @return a com.regex.Pattern for regular expression
      */
     public static Pattern createPattern(String regex) {
         Pattern pattern = new Pattern(dfa.constructDFA(regex));
