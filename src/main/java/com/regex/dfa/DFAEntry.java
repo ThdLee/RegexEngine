@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class DFAEntry {
+class DFAEntry {
 
     private static int count = 0;
     static DFAEntry createEntry() {

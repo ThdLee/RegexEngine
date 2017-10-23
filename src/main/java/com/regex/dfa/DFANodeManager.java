@@ -2,7 +2,7 @@ package com.regex.dfa;
 
 import java.util.Stack;
 
-public class DFANodeManager {
+class DFANodeManager {
 
     private static final int MAX_NODES = 64;
 

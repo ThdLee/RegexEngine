@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>RegexEngine</groupId>
-    <artifactId>RegexEngine</artifactId>
+    <groupId>THDRegex</groupId>
+    <artifactId>THDRegex</artifactId>
     <version>1.0</version>
     <dependencies>
         <dependency>
@@ -14,37 +14,5 @@
             <version>4.12</version>
         </dependency>
     </dependencies>
-
-    <packaging>jar</packaging>
-    <properties>
-        <jdk.version>1.8</jdk.version>
-    </properties>
-    <name>com.regex.RegexEngine</name>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.regex.Client</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

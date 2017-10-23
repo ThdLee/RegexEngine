@@ -1,6 +1,6 @@
 package com.regex.nfa;
 
-public class NFAException extends RuntimeException {
+class NFAException extends RuntimeException {
     public NFAException() {
         super();
     }

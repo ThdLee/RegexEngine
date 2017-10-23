@@ -1,6 +1,6 @@
 package com.regex.token;
 
-public class TokenException extends RuntimeException {
+class TokenException extends RuntimeException {
     public TokenException() {
         super();
     }
