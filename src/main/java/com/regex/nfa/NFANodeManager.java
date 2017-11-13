@@ -3,7 +3,6 @@ package com.regex.nfa;
 import java.util.Stack;
 
 class NFANodeManager {
-    private static final int MAX_NODES = 256;
 
     private Stack<NFANode> busyNodes;
     private Stack<NFANode> freeNodes;
@@ -11,11 +10,6 @@ class NFANodeManager {
     NFANodeManager() {
         busyNodes = new Stack<>();
         freeNodes = new Stack<>();
-
-        for (int i = 0; i < MAX_NODES; i++) {
-            NFANode node = new NFANode();
-            freeNodes.push(node);
-        }
     }
 
     NFANode createNode() {
